@@ -10,13 +10,15 @@ const App = () => {
   const [appVersion, setAppVersion] = useState();
 
   useEffect(() => {
-    ipcRenderer.send(channels.APP_INFO);
-    ipcRenderer.on(channels.APP_INFO, (event, arg) => {
-      ipcRenderer.removeAllListeners(channels.APP_INFO);
-      const { appName, appVersion } = arg;
-      setAppName(appName);
-      setAppVersion(appVersion);
-    });
+    if (ipcRenderer) {
+      ipcRenderer.send(channels.APP_INFO);
+      ipcRenderer.on(channels.APP_INFO, (event, arg) => {
+        ipcRenderer.removeAllListeners(channels.APP_INFO);
+        const { appName, appVersion } = arg;
+        setAppName(appName);
+        setAppVersion(appVersion);
+      });
+    }
   }, []);
 
   useEffect(() => {
